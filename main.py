@@ -45,8 +45,8 @@ async def get_chat_history(message):
         except Exception as e:
             print(e)
             break
-    print(system_prompt)
-    print(system_counter)
+    # print(system_prompt)
+    # print(system_counter)
     messages.append({'role': 'system', 'content': system_prompt})
     messages.reverse()
     print(messages)
@@ -68,7 +68,7 @@ async def on_message(message):
     if content.split()[0] == 'set_error_message':
         try:
             error_message = content.split()[1]
-            print(error_message)
+            print(content)
         except Exception as e:
             print(e)
         return
@@ -78,8 +78,8 @@ async def on_message(message):
             if content.split()[1].isnumeric():
                 system_counter = int(content.split()[1]) % 10
             else:
-                system_prompts[(system_counter + 1) % 10] = content.split()[1]
-                print(content.split()[1])
+                system_prompts[(system_counter + 1) % 10] = content[content.index('set_system_prompt') + len('set_system_prompt'):].strip()
+                print(content)
                 system_counter += 1
         except Exception as e:
             print(e)
@@ -91,8 +91,8 @@ async def on_message(message):
             answer = 'system prompts:\n'
             for i in range(10):
                 answer += str(i) + '. ' + system_prompts[i] + '\n'
-            print(answer)
-            await message.reply(answer)
+                print(answer)
+                await message.reply(answer)
         except Exception as e:
             print(e)
         return
